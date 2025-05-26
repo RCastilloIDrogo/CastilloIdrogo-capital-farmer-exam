@@ -9,14 +9,6 @@
 ## 📋Crea un archivo .env con tu clave de API de OpenAI
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-## Uso
-
-- Accede a: http://localhost:5000
-- Llena el formulario
-- Verás la cotización en formato JSON
-- La información se guarda en `database.db`
-
-
 
 🚀 Uso
 - Ingresa a http://localhost:5000
