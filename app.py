@@ -3,6 +3,13 @@ from datetime import datetime
 import sqlite3
 import os
 
+from openai import OpenAI
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 app = Flask(__name__)
 
 # Crear base de datos si no existe
@@ -34,6 +41,37 @@ precios = {
     "Consultoría tributaria": 800
 }
 
+# Función para análisis con IA
+def analizar_con_ia(descripcion, tipo_servicio):
+    prompt = f"""
+    Analiza el siguiente caso legal y responde en formato JSON:
+
+    {{
+        "complejidad": "Baja | Media | Alta",
+        "ajuste_precio": 0 | 25 | 50,
+        "servicios_adicionales": ["..."],
+        "propuesta_texto": "..."
+    }}
+
+    Descripción: {descripcion}
+    Tipo de servicio: {tipo_servicio}
+    """
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7
+        )
+
+        import json
+        contenido = response.choices[0].message.content.strip()
+        data = json.loads(contenido)
+        return data
+
+    except Exception as e:
+        return {"error": str(e)}
+
 @app.route("/")
 def formulario():
     return render_template("form.html")
@@ -59,6 +97,10 @@ def generar_cotizacion():
     conn.commit()
     conn.close()
 
+    # Llamada a IA
+    analisis = analizar_con_ia(descripcion, servicio)
+
+    # Respuesta final
     return jsonify({
         "numero_cotizacion": numero,
         "nombre": nombre,
@@ -66,7 +108,8 @@ def generar_cotizacion():
         "servicio": servicio,
         "precio": precio,
         "fecha": fecha,
-        "descripcion": descripcion
+        "descripcion": descripcion,
+        "analisis_ia": analisis
     })
 
 if __name__ == "__main__":
