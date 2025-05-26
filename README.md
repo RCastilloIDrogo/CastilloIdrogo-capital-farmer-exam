@@ -43,3 +43,6 @@ OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ✅ Base de datos SQLite para almacenar cotizaciones
 ✅ Análisis automático del caso legal usando OpenAI
 ✅ Propuesta profesional generada con IA
+✅ Autenticación básica (login/logout)
+✅ Diseño responsive para 
+✅ Diseño responsive para 
