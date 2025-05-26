@@ -1,8 +1,33 @@
 from flask import Flask, render_template, request, jsonify
 from datetime import datetime
+import sqlite3
+import os
 
 app = Flask(__name__)
 
+# Crear base de datos si no existe
+def init_db():
+    if not os.path.exists("database.db"):
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+        cursor.execute("""
+        CREATE TABLE cotizaciones (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            numero TEXT,
+            nombre TEXT,
+            email TEXT,
+            servicio TEXT,
+            precio REAL,
+            fecha TEXT,
+            descripcion TEXT
+        )
+        """)
+        conn.commit()
+        conn.close()
+
+init_db()
+
+# Precios fijos por servicio
 precios = {
     "Constitución de empresa": 1500,
     "Defensa laboral": 2000,
@@ -23,6 +48,16 @@ def generar_cotizacion():
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M")
     precio = precios.get(servicio, 0)
     numero = f"COT-2025-{str(int(datetime.now().timestamp()))[-4:]}"  # Número único
+
+    # Guardar en base de datos
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO cotizaciones (numero, nombre, email, servicio, precio, fecha, descripcion)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (numero, nombre, email, servicio, precio, fecha, descripcion))
+    conn.commit()
+    conn.close()
 
     return jsonify({
         "numero_cotizacion": numero,
