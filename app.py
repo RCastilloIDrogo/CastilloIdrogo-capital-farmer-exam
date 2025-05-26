@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, session, url_for
 from datetime import datetime
 import sqlite3
 import os
@@ -11,6 +11,11 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = Flask(__name__)
+app.secret_key = "clave-secreta-para-sesiones"
+
+# Usuario y contraseña fijos
+USUARIO_VALIDO = "admin"
+CONTRASENA_VALIDA = "1234"
 
 # Crear base de datos si no existe
 def init_db():
@@ -72,12 +77,36 @@ def analizar_con_ia(descripcion, tipo_servicio):
     except Exception as e:
         return {"error": str(e)}
 
+# ---------------- Rutas ----------------
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        usuario = request.form["usuario"]
+        contrasena = request.form["contrasena"]
+        if usuario == USUARIO_VALIDO and contrasena == CONTRASENA_VALIDA:
+            session["usuario"] = usuario
+            return redirect(url_for("formulario"))
+        else:
+            return render_template("login.html", error="Credenciales incorrectas")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("usuario", None)
+    return redirect(url_for("login"))
+
 @app.route("/")
 def formulario():
+    if "usuario" not in session:
+        return redirect(url_for("login"))
     return render_template("form.html")
 
 @app.route("/generar", methods=["POST"])
 def generar_cotizacion():
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+
     nombre = request.form["nombre"]
     email = request.form["email"]
     servicio = request.form["servicio"]

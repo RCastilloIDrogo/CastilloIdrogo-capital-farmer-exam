@@ -12,3 +12,10 @@
 - Llena el formulario
 - Verás la cotización en formato JSON
 - La información se guarda en `database.db`
+
+
+## ✨ Funcionalidades bonus implementadas
+
+- ✅ Autenticación básica (login/logout)
+- ✅ Diseño responsive para móvil (Bootstrap 5)
+- ✅ Validaciones de formulario en frontend (HTML5)
