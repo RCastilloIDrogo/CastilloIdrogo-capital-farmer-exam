@@ -41,18 +41,8 @@ OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   - Propuesta profesional estructurada en texto
  
 ## 📁 Estructura del proyecto
-castilloidrogo-capital-farmer-exam/
-├── app.py
-├── database.db
-├── requirements.txt
-├── .gitignore
-├── .env (invisible)
-├── README.md
-├── preguntas_arquitectura.md
-├── templates/
-│   ├── form.html
-│   └── login.html
-└── static/
+![image](https://github.com/user-attachments/assets/8146cd76-6343-4e08-8f9e-e9eb7c2e473c)
+
 
 ## ✨ Funcionalidades bonus implementadas
 
