@@ -6,6 +6,9 @@
 2. Ejecuta: `pip install -r requirements.txt`
 3. Corre la app: `python app.py`
 
+## 📋Crea un archivo .env con tu clave de API de OpenAI
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 ## Uso
 
 - Accede a: http://localhost:5000
@@ -14,8 +17,47 @@
 - La información se guarda en `database.db`
 
 
+
+🚀 Uso
+- Ingresa a http://localhost:5000
+- Inicia sesión con:
+  - Usuario: admin
+  - Contraseña: 1234
+ - Completa el formulario de cotización
+   - Al enviar, el sistema:
+   - Genera un número único (COT-2025-XXXX)
+   - Calcula el precio según el servicio
+   - Guarda los datos en database.db
+   - Llama a la API de OpenAI para analizar la descripción del caso
+   - Devuelve un análisis con complejidad, ajuste de precio, servicios sugeridos y propuesta profesional
+
+## 🤖 APIs utilizadas
+- OpenAI Chat API
+- Modelo: gpt-3.5-turbo
+- Utilizado para generar:
+  - Complejidad del caso
+  - Recomendación de ajuste de precio
+  - Servicios adicionales sugeridos
+  - Propuesta profesional estructurada en texto
+ 
+## 📁 Estructura del proyecto
+castilloidrogo-capital-farmer-exam/
+├── app.py
+├── database.db
+├── requirements.txt
+├── .gitignore
+├── .env (invisible)
+├── README.md
+├── preguntas_arquitectura.md
+├── templates/
+│   ├── form.html
+│   └── login.html
+└── static/
+
 ## ✨ Funcionalidades bonus implementadas
 
-- ✅ Autenticación básica (login/logout)
-- ✅ Diseño responsive para móvil (Bootstrap 5)
-- ✅ Validaciones de formulario en frontend (HTML5)
+✅ Formulario HTML conectado con backend en Flask
+✅ Generación automática de cotización en formato JSON
+✅ Base de datos SQLite para almacenar cotizaciones
+✅ Análisis automático del caso legal usando OpenAI
+✅ Propuesta profesional generada con IA
